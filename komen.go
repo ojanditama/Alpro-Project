@@ -294,7 +294,7 @@ func main() {
 		}
 
 		fmt.Println("\nTekan ENTER untuk kembali ke menu...")
-		fmt.Scanln() // pause
-		fmt.Scanln() // baca ENTER
+		fmt.Scanln() 
+		fmt.Scanln() 
 	}
 }
