@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"strings"
 )
 
 const NMAX = 100
@@ -25,13 +24,13 @@ func analisisSentimen(teks string) string {
 	var i int
 
 	for i = 0; i < len(komentarNegatif); i++ {
-		if strings.Contains(teks, komentarNegatif[i]) {
+		if cari(komentarNegatif[i], teks) {
 			return "negatif"
 		}
 	}
 
 	for i = 0; i < len(komentarPositif); i++ {
-		if strings.Contains(teks, komentarPositif[i]) {
+		if cari(komentarPositif[i], teks) {
 			return "positif"
 		}
 	}
@@ -78,7 +77,7 @@ func tampilKomentar() {
 
 func statistikSentimen() {
 	var i int
-	positif, netral, negatif := 0, 0, 0
+	var positif, netral, negatif int
 	for i = 0; i < jumlahKomentar; i++ {
 		if daftarKomentar[i].sentimen == "positif" {
 			positif++
@@ -141,7 +140,7 @@ func sequentialSearch(keyword string) {
 	fmt.Println("\nHasil Pencarian (Sequential Search):")
 	found = false
 	for i = 0; i < jumlahKomentar; i++ {
-		if strings.Contains(daftarKomentar[i].teks, keyword) {
+		if cari(daftarKomentar[i].teks, keyword) {
 			fmt.Printf("[%s] %s => %s\n", daftarKomentar[i].usn, daftarKomentar[i].teks, daftarKomentar[i].sentimen)
 			found = true
 		}
@@ -166,7 +165,7 @@ func selectionSortKomentar() {
 	}
 }
 
- zfunc binarySearch(keyword string) {
+func binarySearch(keyword string) {
 	var low, mid, high int
 	var found bool
 	var teks string
@@ -181,7 +180,7 @@ func selectionSortKomentar() {
 		mid = (low + high) / 2
 		teks = daftarKomentar[mid].teks
 
-		if strings.Contains(teks, keyword) {
+		if cari(teks, keyword) {
 			fmt.Printf("[%s] %s => %s\n", daftarKomentar[mid].usn, daftarKomentar[mid].teks, daftarKomentar[mid].sentimen)
 			found = true
 			break
@@ -294,7 +293,23 @@ func main() {
 		}
 
 		fmt.Println("\nTekan ENTER untuk kembali ke menu...")
-		fmt.Scanln() 
-		fmt.Scanln() 
+		fmt.Scanln()
+		fmt.Scanln()
 	}
+}
+
+func cari(teks string, kata string) bool {
+	n := len(teks)
+	m := len(kata)
+
+	for i := 0; i <= n-m; i++ {
+		j := 0
+		for j < m && teks[i+j] == kata[j] {
+			j++
+		}
+		if j == m {
+			return true
+		}
+	}
+	return false
 }
