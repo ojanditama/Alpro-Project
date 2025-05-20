@@ -38,6 +38,23 @@ func analisisSentimen(teks string) string {
 	return "netral"
 }
 
+func cari(teks string, kata string) bool {
+	var n, m, j, i int
+	n = len(teks)
+	m = len(kata)
+
+	for i = 0; i <= n-m; i++ {
+		j = 0
+		for j < m && teks[i+j] == kata[j] {
+			j++
+		}
+		if j == m {
+			return true
+		}
+	}
+	return false
+}
+
 func masukKomentar() {
 	var usn, teks string
 	for {
@@ -298,18 +315,3 @@ func main() {
 	}
 }
 
-func cari(teks string, kata string) bool {
-	n := len(teks)
-	m := len(kata)
-
-	for i := 0; i <= n-m; i++ {
-		j := 0
-		for j < m && teks[i+j] == kata[j] {
-			j++
-		}
-		if j == m {
-			return true
-		}
-	}
-	return false
-}
