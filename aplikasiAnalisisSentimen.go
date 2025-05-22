@@ -17,9 +17,11 @@ type komentar struct {
 var daftarKomentar [NMAX]komentar
 var jumlahKomentar int
 
+// Daftar kata sentimen
 var komentarPositif = [NMAX]string{"baik", "bagus", "mantap", "hebat"}
 var komentarNegatif = [NMAX]string{"jelek", "buruk", "parah", "bodoh"}
 
+// fungsi untuk menganalisa sentimen berdasarkan teks komentar
 func analisisSentimen(teks string) string {
 	var i int
 
@@ -38,6 +40,7 @@ func analisisSentimen(teks string) string {
 	return "netral"
 }
 
+// fungsi untuk menginput komentar
 func masukKomentar() {
 	var usn, teks string
 	for {
@@ -67,6 +70,7 @@ func masukKomentar() {
 	}
 }
 
+// Menampilkan komentar
 func tampilKomentar() {
 	var i int
 	fmt.Println("\nDaftar Komentar:")
@@ -75,6 +79,7 @@ func tampilKomentar() {
 	}
 }
 
+// Fungsi untuk mencari kata dalam teks
 func cari(teks string, kata string) bool {
 	var n, m, i, j int
 
@@ -93,6 +98,7 @@ func cari(teks string, kata string) bool {
 	return false
 }
 
+// Menampilkan statistik sentimen
 func statistikSentimen() {
 	var i int
 	var positif, netral, negatif int
@@ -111,6 +117,7 @@ func statistikSentimen() {
 	fmt.Println("Negatif:", negatif)
 }
 
+// Mengubah komentar berdasarkan ID
 func ubahKomentar() {
 	var usn, komentarBaru string
 	var i int
@@ -133,6 +140,7 @@ func ubahKomentar() {
 	fmt.Println("Komentar tidak ditemukan.")
 }
 
+// Menghapus komentar berdasarkan ID
 func hapusKomentar() {
 	var i, j int
 	var id string
@@ -151,6 +159,7 @@ func hapusKomentar() {
 	fmt.Println("Komentar tidak ditemukan.")
 }
 
+// Menurutkan komentar menggunakan metode selection sort
 func selectionSortKomentar() {
 	var i, j, minIdx int
 	for i = 0; i < jumlahKomentar-1; i++ {
@@ -166,6 +175,7 @@ func selectionSortKomentar() {
 	}
 }
 
+// Mencari komentar menggunakan metode sequential search
 func sequentialSearch(keyword string) {
 	var found bool
 	var i int
@@ -183,6 +193,7 @@ func sequentialSearch(keyword string) {
 	}
 }
 
+// Mencari komentar menggunakan metode binary search
 func binarySearch(keyword string) {
 	var low, mid, high int
 	var found bool
@@ -213,16 +224,19 @@ func binarySearch(keyword string) {
 	}
 }
 
+// Membersihkan layar
 func clear() {
 	cmd := exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }
 
+// Mengubah teks menjadi warna pink
 func colorPink(text string) string {
 	return "\033[38;2;209;71;124m" + text + "\033[0m"
 }
 
+// Menampilkan menu utama
 func box() {
 	clear()
 	fmt.Println(colorPink("╔══════════════════════════════════════════════════════════════╗"))
@@ -245,13 +259,15 @@ func box() {
 	fmt.Println(colorPink("║     6. Cari Komentar (Sequential Search)                     ║"))
 	fmt.Println(colorPink("║     7. Cari Komentar (Binary Search)                         ║"))
 	fmt.Println(colorPink("║     8. Urutkan Komentar (Selection Sort berdasarkan teks)    ║"))
-	fmt.Println(colorPink("║     9. Keluar                                                ║"))
+	fmt.Println(colorPink("║     9. Urutkan Komentar (Insertion Sort berdasarkan teks)    ║"))                                        
+	fmt.Println(colorPink("║     10. Keluar                                               ║"))
 	fmt.Println(colorPink("║                                                              ║"))
 	fmt.Println(colorPink("║     Silakan pilih menu yang Anda butuhkan.                   ║"))
 	fmt.Println(colorPink("╚══════════════════════════════════════════════════════════════╝"))
 	fmt.Print(colorPink("SELECT> "))
 }
 
+// Menampilkan subjudul dengan border
 func subBox(judul string) {
 	clear()
 	fmt.Println(colorPink("╔══════════════════════════════════════════════════════════════╗"))
@@ -259,6 +275,7 @@ func subBox(judul string) {
 	fmt.Println(colorPink("╚══════════════════════════════════════════════════════════════╝"))
 }
 
+// program utama
 func main() {
 	var pilih int
 	for pilih != 9 {
