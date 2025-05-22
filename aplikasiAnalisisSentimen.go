@@ -18,8 +18,8 @@ var daftarKomentar [NMAX]komentar
 var jumlahKomentar int
 
 // Daftar kata sentimen
-var komentarPositif = [NMAX]string{"baik", "bagus", "mantap", "hebat"}
-var komentarNegatif = [NMAX]string{"jelek", "buruk", "parah", "bodoh"}
+var komentarPositif = [NMAX]string{"baik", "bagus", "mantap", "hebat", "luar biasa", "puas", "senang", "terbaik", "positif", "wow", "suka", "menakjubkan", "inspiratif", "bermanfaat"}
+var komentarNegatif = [NMAX]string{"jelek", "buruk", "parah", "bodoh", "jijik", "minus", "negatif", "bohong", "menyesal", "gila", "tidak puas", "jelek banget", "benci", "tidak bermanfaat", "mati"}
 
 // fungsi untuk menganalisa sentimen berdasarkan teks komentar
 func analisisSentimen(teks string) string {
