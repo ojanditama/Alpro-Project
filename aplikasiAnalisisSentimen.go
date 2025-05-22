@@ -38,8 +38,46 @@ func analisisSentimen(teks string) string {
 	return "netral"
 }
 
+func masukKomentar() {
+	var usn, teks string
+	for {
+
+		fmt.Print("\nMasukkan ID (atau # untuk keluar): ")
+		fmt.Scan(&usn)
+		if usn == "#" {
+			return
+		}
+		fmt.Print("Masukkan Komentar (atau # untuk keluar): ")
+		fmt.Scan(&teks)
+		if teks == "#" {
+			return
+		}
+		if jumlahKomentar < NMAX {
+			var dataKomentar komentar
+			dataKomentar.usn = usn
+			dataKomentar.teks = teks
+			dataKomentar.sentimen = analisisSentimen(teks)
+
+			daftarKomentar[jumlahKomentar] = dataKomentar
+			jumlahKomentar++
+		} else {
+			fmt.Println("Data komentar penuh.")
+			return
+		}
+	}
+}
+
+func tampilKomentar() {
+	var i int
+	fmt.Println("\nDaftar Komentar:")
+	for i = 0; i < jumlahKomentar; i++ {
+		fmt.Printf("[%s] %s => Sentimen: %s\n", daftarKomentar[i].usn, daftarKomentar[i].teks, daftarKomentar[i].sentimen)
+	}
+}
+
 func cari(teks string, kata string) bool {
-	var n, m, j, i int
+	var n, m, i, j int
+
 	n = len(teks)
 	m = len(kata)
 
@@ -53,43 +91,6 @@ func cari(teks string, kata string) bool {
 		}
 	}
 	return false
-}
-
-func masukKomentar() {
-	var usn, teks string
-	for {
-
-		fmt.Print("\nMasukkan ID (atau # untuk keluar): ")
-		fmt.Scan(&usn)
-		if usn == "#" {
-			break
-		}
-		fmt.Print("Masukkan Komentar (atau # untuk keluar): ")
-		fmt.Scan(&teks)
-		if teks == "#" {
-			break
-		}
-		if jumlahKomentar < NMAX {
-			var dataKomentar komentar
-			dataKomentar.usn = usn
-			dataKomentar.teks = teks
-			dataKomentar.sentimen = analisisSentimen(teks)
-
-			daftarKomentar[jumlahKomentar] = dataKomentar
-			jumlahKomentar++
-		} else {
-			fmt.Println("Data komentar penuh.")
-			break
-		}
-	}
-}
-
-func tampilKomentar() {
-	var i int
-	fmt.Println("\nDaftar Komentar:")
-	for i = 0; i < jumlahKomentar; i++ {
-		fmt.Printf("[%s] %s => Sentimen: %s\n", daftarKomentar[i].usn, daftarKomentar[i].teks, daftarKomentar[i].sentimen)
-	}
 }
 
 func statistikSentimen() {
@@ -129,7 +130,7 @@ func ubahKomentar() {
 			return
 		}
 	}
-	fmt.Println("Komentar tidak ditemukan.")
+	fmt.Println("Komentar tidak ditemukan.")
 }
 
 func hapusKomentar() {
@@ -150,6 +151,21 @@ func hapusKomentar() {
 	fmt.Println("Komentar tidak ditemukan.")
 }
 
+func selectionSortKomentar() {
+	var i, j, minIdx int
+	for i = 0; i < jumlahKomentar-1; i++ {
+		minIdx = i
+		for j = i + 1; j < jumlahKomentar; j++ {
+			if daftarKomentar[j].teks < daftarKomentar[minIdx].teks {
+				minIdx = j
+			}
+		}
+		if minIdx != i {
+			daftarKomentar[i], daftarKomentar[minIdx] = daftarKomentar[minIdx], daftarKomentar[i]
+		}
+	}
+}
+
 func sequentialSearch(keyword string) {
 	var found bool
 	var i int
@@ -164,21 +180,6 @@ func sequentialSearch(keyword string) {
 	}
 	if !found {
 		fmt.Println("Komentar tidak ditemukan.")
-	}
-}
-
-func selectionSortKomentar() {
-	var i, j, minIdx int
-	for i = 0; i < jumlahKomentar-1; i++ {
-		minIdx = i
-		for j = i + 1; j < jumlahKomentar; j++ {
-			if daftarKomentar[j].teks < daftarKomentar[minIdx].teks {
-				minIdx = j
-			}
-		}
-		if minIdx != i {
-			daftarKomentar[i], daftarKomentar[minIdx] = daftarKomentar[minIdx], daftarKomentar[i]
-		}
 	}
 }
 
@@ -200,7 +201,7 @@ func binarySearch(keyword string) {
 		if cari(teks, keyword) {
 			fmt.Printf("[%s] %s => %s\n", daftarKomentar[mid].usn, daftarKomentar[mid].teks, daftarKomentar[mid].sentimen)
 			found = true
-			break
+			return
 		} else if teks < keyword {
 			low = mid + 1
 		} else {
@@ -212,53 +213,50 @@ func binarySearch(keyword string) {
 	}
 }
 
-func color(text string) {
-	cmd := exec.Command("cmd", "/c", "color", text)
-	cmd.Stdout = os.Stdout
-	cmd.Run()
-}
-
 func clear() {
 	cmd := exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
 }
 
+func colorPink(text string) string {
+	return "\033[38;2;209;71;124m" + text + "\033[0m"
+}
+
 func box() {
 	clear()
-	color("a")
-	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
-	fmt.Println("║                   Aplikasi Analisis Sentimen                 ║")
-	fmt.Println("║                  Created by : Fauzan & Mario                 ║")
-	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
+	fmt.Println(colorPink("╔══════════════════════════════════════════════════════════════╗"))
+	fmt.Println(colorPink("║                   Aplikasi Analisis Sentimen                 ║"))
+	fmt.Println(colorPink("║                  Created by : Fauzan & Mario                 ║"))
+	fmt.Println(colorPink("╚══════════════════════════════════════════════════════════════╝"))
 
-	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
-	fmt.Println("║                                                              ║")
-	fmt.Println("║                           MAIN MENU                          ║")
-	fmt.Println("║                                                              ║")
-	fmt.Println("╠══════════════════════════════════════════════════════════════╣")
-	fmt.Println("║     Selamat datang di aplikasi analisis komentar online.     ║")
-	fmt.Println("║                                                              ║")
-	fmt.Println("║     1. Masukkan Komentar                                     ║")
-	fmt.Println("║     2. Tampilkan Komentar                                    ║")
-	fmt.Println("║     3. Statistik Sentimen                                    ║")
-	fmt.Println("║     4. Ubah Komentar                                         ║")
-	fmt.Println("║     5. Hapus Komentar                                        ║")
-	fmt.Println("║     6. Cari Komentar (Sequential Search)                     ║")
-	fmt.Println("║     7. Cari Komentar (Binary Search)                         ║")
-	fmt.Println("║     8. Urutkan Komentar (Selection Sort berdasarkan teks)    ║")
-	fmt.Println("║     9. Keluar                                                ║")
-	fmt.Println("║                                                              ║")
-	fmt.Println("║     Silakan pilih menu yang Anda butuhkan.                   ║")
-	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
-	fmt.Print("SELECT> ")
+	fmt.Println(colorPink("╔══════════════════════════════════════════════════════════════╗"))
+	fmt.Println(colorPink("║                                                              ║"))
+	fmt.Println(colorPink("║                           MAIN MENU                          ║"))
+	fmt.Println(colorPink("║                                                              ║"))
+	fmt.Println(colorPink("╠══════════════════════════════════════════════════════════════╣"))
+	fmt.Println(colorPink("║     Selamat datang di aplikasi analisis komentar online.     ║"))
+	fmt.Println(colorPink("║                                                              ║"))
+	fmt.Println(colorPink("║     1. Masukkan Komentar                                     ║"))
+	fmt.Println(colorPink("║     2. Tampilkan Komentar                                    ║"))
+	fmt.Println(colorPink("║     3. Statistik Sentimen                                    ║"))
+	fmt.Println(colorPink("║     4. Ubah Komentar                                         ║"))
+	fmt.Println(colorPink("║     5. Hapus Komentar                                        ║"))
+	fmt.Println(colorPink("║     6. Cari Komentar (Sequential Search)                     ║"))
+	fmt.Println(colorPink("║     7. Cari Komentar (Binary Search)                         ║"))
+	fmt.Println(colorPink("║     8. Urutkan Komentar (Selection Sort berdasarkan teks)    ║"))
+	fmt.Println(colorPink("║     9. Keluar                                                ║"))
+	fmt.Println(colorPink("║                                                              ║"))
+	fmt.Println(colorPink("║     Silakan pilih menu yang Anda butuhkan.                   ║"))
+	fmt.Println(colorPink("╚══════════════════════════════════════════════════════════════╝"))
+	fmt.Print(colorPink("SELECT> "))
 }
 
 func subBox(judul string) {
 	clear()
-	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
+	fmt.Println(colorPink("╔══════════════════════════════════════════════════════════════╗"))
 	fmt.Printf("║ %-60s ║\n", judul)
-	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
+	fmt.Println(colorPink("╚══════════════════════════════════════════════════════════════╝"))
 }
 
 func main() {
@@ -301,11 +299,11 @@ func main() {
 			fmt.Println("Komentar telah diurutkan berdasarkan teks.")
 		case 9:
 			clear()
-			fmt.Println("  ____    ___     ___    ____      ____   __   __  _____   _")
-			fmt.Println(" / ___|  / _ \\   / _ \\  |  _ \\    | __ )  \\ \\ / / | ____| | |")
-			fmt.Println("| |  _  | | | | | | | | | | | |   |  _ \\   \\ V /  |  _|   | |")
-			fmt.Println("| |_| | | |_| | | |_| | | |_| |   | |_) |   | |   | |___  |_|")
-			fmt.Println(" \\____|  \\___/   \\___/  |____/    |____/    |_|   |_____| (_)")
+			fmt.Println(colorPink("  ____    ___     ___    ____      ____   __   __  _____   _"))
+			fmt.Println(colorPink(" / ___|  / _ \\   / _ \\  |  _ \\    | __ )  \\ \\ / / | ____| | |"))
+			fmt.Println(colorPink("| |  _  | | | | | | | | | | | |   |  _ \\   \\ V /  |  _|   | |"))
+			fmt.Println(colorPink("| |_| | | |_| | | |_| | | |_| |   | |_) |   | |   | |___  |_|"))
+			fmt.Println(colorPink(" \\____|  \\___/   \\___/  |____/    |____/    |_|   |_____| (_)"))
 
 		}
 
@@ -314,4 +312,3 @@ func main() {
 		fmt.Scanln()
 	}
 }
-
