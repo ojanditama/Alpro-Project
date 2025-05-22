@@ -175,6 +175,25 @@ func selectionSortKomentar() {
 	}
 }
 
+// Mengurutkan komentar menggunakan metode insertion sort
+func insertionSortKomentar() {
+	var i, j int
+	var temp komentar
+
+	for i = 1; i < jumlahKomentar; i++ {
+		temp = daftarKomentar[i]
+		j = i - 1
+
+		// Geser elemen yang lebih besar dari temp.teks ke kanan
+		for j >= 0 && daftarKomentar[j].teks > temp.teks {
+			daftarKomentar[j+1] = daftarKomentar[j]
+			j--
+		}
+
+		// Tempatkan temp pada posisi yang tepat
+		daftarKomentar[j+1] = temp
+	}
+}
 // Mencari komentar menggunakan metode sequential search
 func sequentialSearch(keyword string) {
 	var found bool
@@ -278,7 +297,7 @@ func subBox(judul string) {
 // program utama
 func main() {
 	var pilih int
-	for pilih != 9 {
+	for pilih != 10 {
 		box()
 		fmt.Scan(&pilih)
 
@@ -315,6 +334,10 @@ func main() {
 			selectionSortKomentar()
 			fmt.Println("Komentar telah diurutkan berdasarkan teks.")
 		case 9:
+			subBox("Urutkan Komentar (Insertion Sort)")
+			insertionSortKomentar()
+			fmt.Println("Komentar telah diurutkan menggunakan insertion sort berdasarkan teks.")
+		case 10:
 			clear()
 			fmt.Println(colorPink("  ____    ___     ___    ____      ____   __   __  _____   _"))
 			fmt.Println(colorPink(" / ___|  / _ \\   / _ \\  |  _ \\    | __ )  \\ \\ / / | ____| | |"))
